@@ -6,5 +6,5 @@ add_executable(datafactory
 
 target_link_libraries(datafactory
     PRIVATE
-        trsys_backend
+        trsys
 )

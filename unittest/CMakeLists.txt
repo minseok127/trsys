@@ -6,5 +6,5 @@ add_executable(unittest
 
 target_link_libraries(unittest
     PRIVATE
-        trsys_backend
+        trsys
 )

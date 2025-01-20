@@ -6,5 +6,5 @@ add_executable(backtest
 
 target_link_libraries(backtest
     PRIVATE
-        trsys_backend
+        trsys
 )

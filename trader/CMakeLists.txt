@@ -6,5 +6,5 @@ add_executable(trader
 
 target_link_libraries(trader
     PRIVATE
-        trsys_backend
+        trsys
 )
