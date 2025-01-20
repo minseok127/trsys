@@ -30,4 +30,5 @@ add_subdirectory(backend)
 add_subdirectory(unittest)
 add_subdirectory(backtest)
 add_subdirectory(trader)
+add_subdirectory(datafactory)
 
