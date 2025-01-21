@@ -20,12 +20,17 @@ sudo apt-get install \
      cmake
 
 ARROW_DIR=$BASE_DIR"/external/arrow/cpp"
-cd $ARROW_DIR
+ARROW_BUILD_DIR=$ARROW_DIR"/build"
+ARROW_INSTALL_DIR=$ARROW_DIR"/install"
 
-rm -rf build
-mkdir build
-cd build
+rm -rf $ARROW_BUILD_DIR
+rm -rf $ARROW_INSTALL_DIR
 
-cmake .. --preset ninja-release 
-cmake --build .
-cmake --install .
+mkdir $ARROW_BUILD_DIR
+mkdir $ARROW_INSTALL_DIR
+
+cd $ARROW_BUILD_DIR
+
+cmake .. --preset ninja-release -DCMAKE_INSTALL_PREFIX=$ARROW_INSTALL_DIR
+cmake --build . -j1
+cmake --install . --prefix $ARROW_INSTALL_DIR

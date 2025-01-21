@@ -7,17 +7,11 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 # ------------------------------------------------
-# Apache Arrow build options
+# Add Apache Arrow
 # ------------------------------------------------
-option(ARROW_BUILD_TESTS "Build Arrow tests" OFF)
-option(ARROW_BUILD_SHARED "Build shared Arrow libs" ON)
-option(ARROW_BUILD_STATIC "Build static Arrow libs" OFF)
-option(ARROW_PARQUET "Enable Parquet component" ON)
-
-# ------------------------------------------------
-# Add external libraries
-# ------------------------------------------------
-add_subdirectory(external/arrow/cpp)
+set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_LIST_DIR}/external/arrow/cpp/install")
+find_package(Arrow REQUIRED CONFIG)
+find_package(Parquet REQUIRED CONFIG)
 
 # ------------------------------------------------
 # Backend for trsys
