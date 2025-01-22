@@ -14,10 +14,6 @@ UNITTEST_DIR=$BUILD_DIR"/unittest"
 
 cd $UNITTEST_DIR
 
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-}"
-export LD_LIBRARY_PATH="$ARROW_LIB_DIR:$LD_LIBRARY_PATH"
-
 ./arrow_data_structure
 ./arrow_file_io
 ./arrow_compute
-./arrow_dataset

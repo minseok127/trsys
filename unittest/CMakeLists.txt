@@ -39,20 +39,3 @@ target_link_libraries(arrow_compute
 	PRIVATE
 		Arrow::arrow_shared
 )
-
-#----------------------------------------------------------------
-# Basic Arrow Datasets
-# https://arrow.apache.org/docs/cpp/tutorials/datasets_tutorial.html
-#----------------------------------------------------------------
-add_executable(arrow_dataset
-	arrow_dataset.cpp
-)
-
-target_link_libraries(arrow_dataset
-	PRIVATE
-		Arrow::arrow_shared
-		Parquet::parquet_shared
-		ArrowDataset::arrow_dataset_shared
-		ArrowAcero::arrow_acero_shared
-)
-

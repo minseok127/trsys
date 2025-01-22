@@ -35,7 +35,3 @@ cmake .. --preset ninja-release -DCMAKE_INSTALL_PREFIX=$ARROW_INSTALL_DIR
 cmake --build . -j1
 cmake --install . --prefix $ARROW_INSTALL_DIR
 
-echo ${ARROW_INSTALL_DIR}"/lib" | sudo tee /etc/ld.so.conf.d/custom.conf
-sudo ldconfig
-
-
