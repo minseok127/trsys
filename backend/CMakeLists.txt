@@ -29,4 +29,5 @@ target_include_directories(trsys PRIVATE
 # ------------------------------------------------
 target_link_libraries(trsys PRIVATE
     Arrow::arrow_shared
+	Parquet::parquet_shared
 )

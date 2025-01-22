@@ -33,3 +33,4 @@ lib*.pc
 *.swp
 .vscode
 cscope.*
+build/
