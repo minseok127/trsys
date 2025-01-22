@@ -10,11 +10,10 @@ set(CMAKE_CXX_STANDARD 20)
 # Add Apache Arrow
 # ------------------------------------------------
 set(ARROW_INSTALL_PATH "${CMAKE_CURRENT_LIST_DIR}/external/arrow/cpp/install")
-list(APPEND CMAKE_PREFIX_PATH "${ARROW_INSTALL_PATH}")
-find_package(Arrow REQUIRED CONFIG)
-find_package(Parquet REQUIRED CONFIG)
-find_package(ArrowDataset REQUIRED CONFIG)
-find_package(ArrowAcero REQUIRED CONFIG)
+find_package(Arrow REQUIRED PATHS ${ARROW_INSTALL_PATH})
+find_package(Parquet REQUIRED PATHS ${ARROW_INSTALL_PATH})
+find_package(ArrowAcero REQUIRED PATHS ${ARROW_INSTALL_PATH})
+find_package(ArrowDataset REQUIRED PATHS ${ARROW_INSTALL_PATH})
 
 # ------------------------------------------------
 # Backend for trsys

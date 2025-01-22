@@ -8,7 +8,7 @@ set -e
 set -x
 
 BUILD=Debug
-BASE_DIR=$DIR"/../"
+BASE_DIR=$DIR"/.."
 BUILD_DIR=$BASE_DIR"/build"
 
 rm -rf $BUILD_DIR

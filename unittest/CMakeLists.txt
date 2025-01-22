@@ -17,11 +17,11 @@ target_link_libraries(arrow_data_structure
 # Basic Arrow File I/O
 # https://arrow.apache.org/docs/cpp/tutorials/io_tutorial.html
 #----------------------------------------------------------------
-add_executable(arrow_file_io_test
-	arrow_file_io_test.cpp
+add_executable(arrow_file_io
+	arrow_file_io.cpp
 )
 
-target_link_libraries(arrow_file_io_test
+target_link_libraries(arrow_file_io
 	PRIVATE
 		Arrow::arrow_shared
 		Parquet::parquet_shared
@@ -55,3 +55,4 @@ target_link_libraries(arrow_dataset
 		ArrowDataset::arrow_dataset_shared
 		ArrowAcero::arrow_acero_shared
 )
+

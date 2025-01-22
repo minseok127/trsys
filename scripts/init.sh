@@ -7,7 +7,7 @@ set -u
 set -e
 set -x
 
-BASE_DIR=$DIR"/../"
+BASE_DIR=$DIR"/.."
 cd $BASE_DIR
 
 git submodule update --init --recursive
@@ -34,3 +34,8 @@ cd $ARROW_BUILD_DIR
 cmake .. --preset ninja-release -DCMAKE_INSTALL_PREFIX=$ARROW_INSTALL_DIR
 cmake --build . -j1
 cmake --install . --prefix $ARROW_INSTALL_DIR
+
+echo ${ARROW_INSTALL_DIR}"/lib" | sudo tee /etc/ld.so.conf.d/custom.conf
+sudo ldconfig
+
+
