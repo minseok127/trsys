@@ -10,6 +10,11 @@ set -x
 BASE_DIR=$DIR"/.."
 cd $BASE_DIR
 
+DATA_DIR=$BASE_DIR"/data"
+CONFIG_DIR=$BASE_DIR"/config"
+mkdir -p $DATA_DIR
+mkdir -p $CONFIG_DIR
+
 git submodule update --init --recursive
 
 sudo apt-get update
@@ -19,7 +24,9 @@ sudo apt-get install \
      ninja-build \
      cmake
 
+#-------------------------------------------------------------------------
 # Apache Arrow
+#-------------------------------------------------------------------------
 ARROW_DIR=$BASE_DIR"/external/arrow/cpp"
 ARROW_BUILD_DIR=$ARROW_DIR"/build"
 ARROW_INSTALL_DIR=$ARROW_DIR"/install"
@@ -36,8 +43,9 @@ cmake .. --preset ninja-release -DCMAKE_INSTALL_PREFIX=$ARROW_INSTALL_DIR
 cmake --build . -j1
 cmake --install .
 
-
+#-------------------------------------------------------------------------
 # mimalloc
+#-------------------------------------------------------------------------
 MIMALLOC_DIR=$BASEDIR"/external/mimalloc"
 MIMALLOC_BUILD_DIR=$MIMALLOC_DIR"/out/release"
 MIMALLOC_INSTALL_DIR=$MIMALLOC_BUILD_DIR"/install"
