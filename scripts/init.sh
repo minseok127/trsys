@@ -19,6 +19,7 @@ sudo apt-get install \
      ninja-build \
      cmake
 
+# Apache Arrow
 ARROW_DIR=$BASE_DIR"/external/arrow/cpp"
 ARROW_BUILD_DIR=$ARROW_DIR"/build"
 ARROW_INSTALL_DIR=$ARROW_DIR"/install"
@@ -33,5 +34,20 @@ cd $ARROW_BUILD_DIR
 
 cmake .. --preset ninja-release -DCMAKE_INSTALL_PREFIX=$ARROW_INSTALL_DIR
 cmake --build . -j1
-cmake --install . --prefix $ARROW_INSTALL_DIR
+cmake --install .
 
+
+# mimalloc
+MIMALLOC_DIR=$BASEDIR"/external/mimalloc"
+MIMALLOC_BUILD_DIR=$MIMALLOC_DIR"/out/release"
+MIMALLOC_INSTALL_DIR=$MIMALLOC_BUILD_DIR"/install"
+
+rm -rf $MIMALLOC_BUILD_DIR
+mkdir -p $MIMALLOC_BUILD_DIR
+mkdir -p $MIMALLOC_INSTALL_DIR
+
+cd $MIMALLOC_BUILD_DIR
+
+cmake ../.. -DCMAKE_INSTALL_PREFIX=$MIMALLOC_INSTALL_DIR
+make
+cmake --install .

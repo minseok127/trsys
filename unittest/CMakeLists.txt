@@ -39,3 +39,15 @@ target_link_libraries(arrow_compute
 	PRIVATE
 		Arrow::arrow_shared
 )
+
+#----------------------------------------------------------------
+# mimalloc
+#----------------------------------------------------------------
+add_executable(mimalloc_test
+	mimalloc_test.cpp
+)
+
+target_link_libraries(mimalloc_test
+	PRIVATE
+		mimalloc
+)

@@ -9,9 +9,19 @@ set(CMAKE_CXX_STANDARD 20)
 # ------------------------------------------------
 # Add Apache Arrow
 # ------------------------------------------------
-set(ARROW_INSTALL_PATH "${CMAKE_CURRENT_LIST_DIR}/external/arrow/cpp/install")
+set(ARROW_INSTALL_PATH
+	"${CMAKE_CURRENT_LIST_DIR}/external/arrow/cpp/install")
+
 find_package(Arrow REQUIRED PATHS ${ARROW_INSTALL_PATH})
 find_package(Parquet REQUIRED PATHS ${ARROW_INSTALL_PATH})
+
+# ------------------------------------------------
+# Add mimalloc
+# ------------------------------------------------
+set(MIMALLOC_INSTALL_PATH 
+	"${CMAKE_CURRENT_LIST_DIR}/external/mimalloc/out/release/install")
+
+find_package(mimalloc 1.8 REQUIRED PATHS ${MIMALLOC_INSTALL_PATH})
 
 # ------------------------------------------------
 # Backend for trsys

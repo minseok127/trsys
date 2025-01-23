@@ -1,3 +1,6 @@
 [submodule "external/arrow"]
 	path = external/arrow
 	url = https://github.com/apache/arrow.git
+[submodule "external/mimalloc"]
+	path = external/mimalloc
+	url = https://github.com/microsoft/mimalloc.git
