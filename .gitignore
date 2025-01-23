@@ -34,3 +34,5 @@ lib*.pc
 .vscode
 cscope.*
 build/
+data/
+config/
