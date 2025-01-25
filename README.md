@@ -9,6 +9,9 @@ trsys/
 │   └── arrow_file_io.cpp
 │   └── arrow_compute.cpp
 │   └── mimalloc_test.cpp
+├── scripts/
+│   └── init.sh
+│   └── install.sh
 ├── backtest/
 │   └── CMakeLists.txt
 ├── trader/
