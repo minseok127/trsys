@@ -20,12 +20,13 @@ trsys/
 │   └── CMakeLists.txt
 ├── config/
 ├── data/
-├── backend/              # libtrsys
+├── backend/
 │   ├── CMakeLists.txt
 │   ├── include/
 │   │   ├── core/
 │   |   |   └── candle_table.h
 │   |   |   └── market_api.h
+│   |   |   └── async_table.h
 │   │   ├── drivers/
 │   |   |   └── arrow_candle_table_driver.h
 │   |   |   └── std_vector_candle_table_driver.h
@@ -33,11 +34,12 @@ trsys/
 │   │   ├── storage/
 │   │   ├── backtest/
 │   │   ├── trader/
-│   │   ├── datafactory/
+│   │   └── datafactory/
 │   └── src/
 │       ├── core/
 │       |   └── candle_table.cpp
 │       |   └── market_api.cpp
+│       |   └── async_table.cpp
 │       ├── drivers/
 │       |   └── arrow_candle_table_driver.cpp
 │       |   └── std_vector_candle_table_driver.cpp
@@ -45,7 +47,7 @@ trsys/
 │       ├── storage/
 │       ├── backtest/
 │       ├── trader/
-│       ├── datafactory/
+│       └── datafactory/
 └── external/
     └── arrow/             # Apache Arrow (Git submodule)
     └── mimalloc/          # Microsoft mimalloc (Git submodule)
