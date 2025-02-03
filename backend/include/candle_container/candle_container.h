@@ -35,34 +35,36 @@ struct candle_data {
 	int64_t		state;
 } __cacheline_aligned;
 
-#define CANDLE_IS_NULL_MASK	(0x8000000000000000)
-#define CANDLE_INDEX_MASK	(0x7fffffffffffffff)
+#define CANDLE_IS_NULL_MASK	(0x8000000000000000ULL)
+#define CANDLE_INDEX_MASK	(0x7fffffffffffffffULL)
 
 #define GET_CANDLE_INDEX(candle_state)	(candle_state & CANDLE_INDEX_MASK)
 #define IS_CANDLE_NULL(candle_state)	(candle_state < 0)
 
-#define CANDLE_TYPE_YEAR	(0)
-#define CANDLE_TYPE_MONTH	(1)
-#define CANDLE_TYPE_WEEK	(2)
-#define CANDLE_TYPE_DAY		(3)
-#define CANDLE_TYPE_1H		(4)
-#define CANDLE_TYPE_30M		(5)
-#define CANDLE_TYPE_5M		(6)
-#define CANDLE_TYPE_1M		(7)
+enum candle_type_enum {
+	CANDLE_TYPE_YEAR,
+	CANDLE_TYPE_MONTH,
+	CANDLE_TYPE_WEEK,
+	CANDLE_TYPE_DAY,
+	CANDLE_TYPE_1H,
+	CANDLE_TYPE_30M,
+	CANDLE_TYPE_5M,
+	CANDLE_TYPE_1M,
+};
 
 /*
  * struct candle_container - Generic container for candle_data.
  * @candle_table: pointer to the underlying candle data table
  * @auxiliary: pointer to auxiliary data structures for the container
- * @candle_type: the type of candle table
+ * @candle_type: the type of the candle table
  *
  * This container abstracts both the candle_data table and any additional data
  * structures needed for efficient managment.
  */
 struct candle_container {
-	void	*candle_table;
-	void	*auxiliary;
-	int		candle_type;
+	void *candle_table;
+	void *auxiliary;
+	int	candle_type;
 };
 
 /*
