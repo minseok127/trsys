@@ -4,17 +4,7 @@
 # Make static library
 # ------------------------------------------------
 add_library(trsys SHARED
-	# src/core/
 
-	# src/drivers/
-
-	# src/storage/
-
-	# src/backtest/
-
-	# src/trader/
-
-	# src/datafactory/
 )
 
 # ------------------------------------------------
