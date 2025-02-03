@@ -68,29 +68,6 @@ struct candle_container {
 };
 
 /*
- * Function pointer types for container operations.
- * See the details in struct candle_container_ops.
- */
-typedef int (*candle_container_atomic_update_candle)(
-	struct candle_container *container_ptr,
-	int64_t trade_timestamp, int32_t price);
-
-typedef struct candle_data *(*candle_container_fetch_by_index)(
-	const struct candle_container *containter_ptr, int32_t index);
-
-typedef struct candle_data *(*candle_container_fetch_by_start_timestamp)(
-	const struct candle_container *container_ptr,
-	int64_t start_timestamp);
-
-typedef struct candle_data *(*candle_container_fetch_by_end_timestamp)(
-	const struct candle_container *container_ptr,
-	int64_t end_timestamp);
-
-typedef struct candle_data *(*candle_container_fetch_by_datetime)(
-	const struct candle_container *container_ptr,
-	int32_t date, int32_t time);
-
-/*
  * struct candle_container_ops - Interface for container operations.
  * @atomic_update_candle: function pointer to apply a new trade data
  * @fetch_by_index: function pointer to fetch a candle by index
@@ -103,11 +80,20 @@ typedef struct candle_data *(*candle_container_fetch_by_datetime)(
  * This structure abstracts operations on a candle_container.
  */	
 struct candle_container_ops {
-	candle_container_atomic_update_candle		atomic_update_candle;
-	candle_container_fetch_by_index				fetch_by_index;
-	candle_container_fetch_by_start_timestamp	fetch_by_start_timestamp;
-	candle_container_fetch_by_end_timestamp		fetch_by_end_timestamp;
-	candle_container_fetch_by_datetime			fetch_by_datetime;
+	int (*atomic_update_candle)(struct candle_container *container_ptr,
+		int64_t trade_timestamp, int32_t price);
+
+	struct candle_data *(*fetch_by_index)(
+		struct candle_container *container_ptr, int32_t index);
+
+	struct candle_data *(*fetch_by_start_timestamp)(
+		struct candle_container *container_ptr, int64_t start_timestamp);
+
+	struct candle_data *(*fetch_by_end_timestamp)(
+		struct candle_container *container_ptr, int64_t end_timestamp);
+
+	struct candle_data *(*fetch_by_datetime)(
+		struct candle_container *container_ptr, int32_t date, int32_t time);
 };
 
 #endif /* CANDLE_CONTAINER_H */
