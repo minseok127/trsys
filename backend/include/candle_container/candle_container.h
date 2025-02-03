@@ -69,6 +69,8 @@ struct candle_container {
 
 /*
  * struct candle_container_ops - Interface for container operations.
+ * @init_candle_container: initialize the candle container
+ * @free_candle_container: free the candle container
  * @atomic_update_candle: function pointer to apply a new trade data
  * @fetch_by_index: function pointer to fetch a candle by index
  * @fetch_by_start_timestamp: function pointer to fecth a candle by
@@ -80,6 +82,10 @@ struct candle_container {
  * This structure abstracts operations on a candle_container.
  */	
 struct candle_container_ops {
+	void (*init_candle_container)(struct candle_container *container_ptr);
+
+	void (*free_candle_container)(struct candle_container *container_ptr);
+
 	int (*atomic_update_candle)(struct candle_container *container_ptr,
 		int64_t trade_timestamp, int32_t price);
 
