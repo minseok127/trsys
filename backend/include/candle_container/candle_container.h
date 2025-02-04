@@ -7,17 +7,6 @@
 #define __cacheline_aligned __attribute__((aligned(64)))
 #endif /* __cacheline_aligned */
 
-enum candle_type_enum {
-	CANDLE_TYPE_YEAR,
-	CANDLE_TYPE_MONTH,
-	CANDLE_TYPE_WEEK,
-	CANDLE_TYPE_DAY,
-	CANDLE_TYPE_1H,
-	CANDLE_TYPE_30M,
-	CANDLE_TYPE_5M,
-	CANDLE_TYPE_1M,
-};
-
 /*
  * struct candle_data - Structure for storing a single OHLCV candle.
  * @date: e.g. 2024-01-01 => 20240101
@@ -139,10 +128,25 @@ struct candle_container_ops {
 		void *container_ptr, int32_t date, int32_t time);
 };
 
+enum candle_type_enum {
+	CANDLE_TYPE_YEAR,
+	CANDLE_TYPE_MONTH,
+	CANDLE_TYPE_WEEK,
+	CANDLE_TYPE_DAY,
+	CANDLE_TYPE_1H,
+	CANDLE_TYPE_30M,
+	CANDLE_TYPE_5M,
+	CANDLE_TYPE_1M,
+};
+
+#define MAX_SYMBOL_LENGTH	(16)
+
 /*
  * struct generic_candle_container - Generic container for candle_data.
  * @container_ptr: pointer to the underlying candle container
  * @container_ops: interface to the candle container
+ * @symbol: identifier of the candle container
+ * @candle_type: type of candles
  *
  * This is an abstraction for various types of candle containers. Each candle
  * container implementation, optimized for its own purpose, must provide a
@@ -151,6 +155,8 @@ struct candle_container_ops {
 struct candle_container {
 	void *contanier_ptr;
 	struct candle_container_ops *container_ops;
+	char symbol[MAX_SYMBOL_LENGTH];
+	int candle_type;
 };
 
 #endif /* CANDLE_CONTAINER_H */
