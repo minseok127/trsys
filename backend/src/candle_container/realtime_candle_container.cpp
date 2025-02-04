@@ -1,6 +1,6 @@
-#include "include/candle_cantainer/waitfree_mutable_candle_container.h"
+#include "include/candle_cantainer/realtime_candle_container.h"
 
-static candle_container_ops waitfree_mutable_candle_container_ops = {
+static candle_container_ops realtime_candle_container_ops = {
 	.update_candle = ,
 	.get_candle_by_index = ,
 	.get_candle_by_start_timestamp = ,
