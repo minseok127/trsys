@@ -52,9 +52,7 @@ struct candle_data {
 
 /*
  * struct candle_container_ops - Interface for container operations.
- * @init_candle_container: initialize the candle container
- * @free_candle_container: free the candle container
- * @atomic_update_candle: function pointer to apply a new trade data
+ * @update_candle: function pointer to apply a new trade data
  * @get_*_by_index: function pointer to fetch a data by index
  * @get_*_by_start_timestamp: function pointer to fecth a data by
  * start timestamp
@@ -65,98 +63,93 @@ struct candle_data {
  * This structure abstracts operations on a candle_container.
  */	
 struct candle_container_ops {
-	void (*init_candle_container)(struct candle_container *container_ptr,
-		int candle_type);
-
-	void (*free_candle_container)(struct candle_container *container_ptr);
-
-	int64_t (*update_candle)(struct candle_container *container_ptr,
+	int64_t (*update_candle)(void *container_ptr,
 		int64_t trade_timestamp, int32_t price);
 
-	struct candle_data (*get_candle_by_index)(
-		struct candle_container *container_ptr, int32_t index);
+	struct candle_data (*get_candle_by_index)(void *container_ptr,
+		int32_t index);
 
 	struct candle_data (*get_candle_by_start_timestamp)(
-		struct candle_container *container_ptr, int64_t start_timestamp);
+		void *container_ptr, int64_t start_timestamp);
 
 	struct candle_data (*get_candle_by_end_timestamp)(
-		struct candle_container *container_ptr, int64_t end_timestamp);
+		void *container_ptr, int64_t end_timestamp);
 
 	struct candle_data (*get_candle_by_datetime)(
-		struct candle_container *container_ptr, int32_t date, int32_t time);
+		void *container_ptr, int32_t date, int32_t time);
 
 	int32_t (*get_open_by_index)(
-		struct candle_container *container_ptr, int32_t index);
+		void *container_ptr, int32_t index);
 
 	int32_t (*get_open_by_start_timestamp)(
-		struct candle_container *container_ptr, int64_t start_timestamp);
+		void *container_ptr, int64_t start_timestamp);
 
 	int32_t (*get_open_by_end_timestamp)(
-		struct candle_container *container_ptr, int64_t end_timestamp);
+		void *container_ptr, int64_t end_timestamp);
 
 	int32_t (*get_open_by_datetime)(
-		struct candle_container *container_ptr, int32_t date, int32_t time);
+		void *container_ptr, int32_t date, int32_t time);
 
 	int32_t (*get_high_by_index)(
-		struct candle_container *container_ptr, int32_t index);
+		void *container_ptr, int32_t index);
 
 	int32_t (*get_high_by_start_timestamp)(
-		struct candle_container *container_ptr, int64_t start_timestamp);
+		void *container_ptr, int64_t start_timestamp);
 
 	int32_t (*get_high_by_end_timestamp)(
-		struct candle_container *container_ptr, int64_t end_timestamp);
+		void *container_ptr, int64_t end_timestamp);
 
 	int32_t (*get_high_by_datetime)(
-		struct candle_container *container_ptr, int32_t date, int32_t time);
+		void *container_ptr, int32_t date, int32_t time);
 
 	int32_t (*get_low_by_index)(
-		struct candle_container *container_ptr, int32_t index);
+		void *container_ptr, int32_t index);
 
 	int32_t (*get_low_by_start_timestamp)(
-		struct candle_container *container_ptr, int64_t start_timestamp);
+		void *container_ptr, int64_t start_timestamp);
 
 	int32_t (*get_low_by_end_timestamp)(
-		struct candle_container *container_ptr, int64_t end_timestamp);
+		void *container_ptr, int64_t end_timestamp);
 
 	int32_t (*get_low_by_datetime)(
-		struct candle_container *container_ptr, int32_t date, int32_t time);
+		void *container_ptr, int32_t date, int32_t time);
 
 	int32_t (*get_close_by_index)(
-		struct candle_container *container_ptr, int32_t index);
+		void *container_ptr, int32_t index);
 
 	int32_t (*get_close_by_start_timestamp)(
-		struct candle_container *container_ptr, int64_t start_timestamp);
+		void *container_ptr, int64_t start_timestamp);
 
 	int32_t (*get_close_by_end_timestamp)(
-		struct candle_container *container_ptr, int64_t end_timestamp);
+		void *container_ptr, int64_t end_timestamp);
 
 	int32_t (*get_close_by_datetime)(
-		struct candle_container *container_ptr, int32_t date, int32_t time);
+		void *container_ptr, int32_t date, int32_t time);
 
 	int64_t (*get_volume_by_index)(
-		struct candle_container *container_ptr, int32_t index);
+		void *container_ptr, int32_t index);
 
 	int64_t (*get_volume_by_start_timestamp)(
-		struct candle_container *container_ptr, int64_t start_timestamp);
+		void *container_ptr, int64_t start_timestamp);
 
 	int64_t (*get_volume_by_end_timestamp)(
-		struct candle_container *container_ptr, int64_t end_timestamp);
+		void *container_ptr, int64_t end_timestamp);
 
 	int64_t (*get_volume_by_datetime)(
-		struct candle_container *container_ptr, int32_t date, int32_t time);
+		void *container_ptr, int32_t date, int32_t time);
 };
 
 /*
- * struct candle_container - Generic container for candle_data.
- * @container_impl: pointer to the underlying candle container
+ * struct generic_candle_container - Generic container for candle_data.
+ * @container_ptr: pointer to the underlying candle container
  * @container_ops: interface to the candle container
  *
  * This is an abstraction for various types of candle containers. Each candle
- * container implementation, optimized for its specific purpose, must provide a
+ * container implementation, optimized for its own purpose, must provide a
  * pointer to the implemented container and interface to communicate.
  */
 struct candle_container {
-	void *contanier_impl;
+	void *contanier_ptr;
 	struct candle_container_ops *container_ops;
 };
 
