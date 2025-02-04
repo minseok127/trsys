@@ -3,12 +3,17 @@
 
 #include <stdint.h>
 
+#include <string>
+
 #ifndef __cacheline_aligned
 #define __cacheline_aligned __attribute__((aligned(64)))
 #endif /* __cacheline_aligned */
 
 /*
- * struct candle_data - Structure for storing a single OHLCV candle.
+ * Data structure for storing a single OHLCV candle. This is a logical unit of
+ * candle table. But its physical layout may be different on the
+ * candle_container type.
+ *
  * @date: e.g. 2024-01-01 => 20240101
  * @time: e.g. 12:04:01 => 120401 (optional)
  * @start_timestamp: the candle's start unix epoch timestamp
@@ -40,7 +45,9 @@ struct candle_data {
 #define IS_CANDLE_NULL(candle_state)	(candle_state & CANDLE_NULL_MASK)
 
 /*
- * struct candle_container_ops - Interface for container operations.
+ * This structure abstracts operations on a candle_container. All types of
+ * candle_container must provide candle_container_ops. 
+ *
  * @update_candle: function pointer to apply a new trade data
  * @get_*_by_index: function pointer to fetch a data by index
  * @get_*_by_start_timestamp: function pointer to fecth a data by
@@ -48,84 +55,82 @@ struct candle_data {
  * @get_*_by_end_timestamp: function pointer to fetch a data by
  * end timestamp
  * @get_*_by_datetime: function pointer to fetch a data by datetime
- *
- * This structure abstracts operations on a candle_container.
  */	
 struct candle_container_ops {
-	int64_t (*update_candle)(void *container_ptr,
+	int64_t (*update_candle)(void *candle_table,
 		int64_t trade_timestamp, int32_t price);
 
-	struct candle_data (*get_candle_by_index)(void *container_ptr,
-		int32_t index);
+	struct candle_data (*get_candle_by_index)(
+		void *candle_table, int32_t index);
 
 	struct candle_data (*get_candle_by_start_timestamp)(
-		void *container_ptr, int64_t start_timestamp);
+		void *candle_table, int64_t start_timestamp);
 
 	struct candle_data (*get_candle_by_end_timestamp)(
-		void *container_ptr, int64_t end_timestamp);
+		void *candle_table, int64_t end_timestamp);
 
 	struct candle_data (*get_candle_by_datetime)(
-		void *container_ptr, int32_t date, int32_t time);
+		void *candle_table, int32_t date, int32_t time);
 
 	int32_t (*get_open_by_index)(
-		void *container_ptr, int32_t index);
+		void *candle_table, int32_t index);
 
 	int32_t (*get_open_by_start_timestamp)(
-		void *container_ptr, int64_t start_timestamp);
+		void *candle_table, int64_t start_timestamp);
 
 	int32_t (*get_open_by_end_timestamp)(
-		void *container_ptr, int64_t end_timestamp);
+		void *candle_table, int64_t end_timestamp);
 
 	int32_t (*get_open_by_datetime)(
-		void *container_ptr, int32_t date, int32_t time);
+		void *candle_table, int32_t date, int32_t time);
 
 	int32_t (*get_high_by_index)(
-		void *container_ptr, int32_t index);
+		void *candle_table, int32_t index);
 
 	int32_t (*get_high_by_start_timestamp)(
-		void *container_ptr, int64_t start_timestamp);
+		void *candle_table, int64_t start_timestamp);
 
 	int32_t (*get_high_by_end_timestamp)(
-		void *container_ptr, int64_t end_timestamp);
+		void *candle_table, int64_t end_timestamp);
 
 	int32_t (*get_high_by_datetime)(
-		void *container_ptr, int32_t date, int32_t time);
+		void *candle_table, int32_t date, int32_t time);
 
 	int32_t (*get_low_by_index)(
-		void *container_ptr, int32_t index);
+		void *candle_table, int32_t index);
 
 	int32_t (*get_low_by_start_timestamp)(
-		void *container_ptr, int64_t start_timestamp);
+		void *candle_table, int64_t start_timestamp);
 
 	int32_t (*get_low_by_end_timestamp)(
-		void *container_ptr, int64_t end_timestamp);
+		void *candle_table, int64_t end_timestamp);
 
 	int32_t (*get_low_by_datetime)(
-		void *container_ptr, int32_t date, int32_t time);
+		void *candle_table, int32_t date, int32_t time);
 
 	int32_t (*get_close_by_index)(
-		void *container_ptr, int32_t index);
+		void *candle_table, int32_t index);
 
 	int32_t (*get_close_by_start_timestamp)(
-		void *container_ptr, int64_t start_timestamp);
+		void *candle_table, int64_t start_timestamp);
 
 	int32_t (*get_close_by_end_timestamp)(
-		void *container_ptr, int64_t end_timestamp);
+		void *candle_table, int64_t end_timestamp);
 
 	int32_t (*get_close_by_datetime)(
-		void *container_ptr, int32_t date, int32_t time);
+		void *candle_table, int32_t date, int32_t time);
 
 	int64_t (*get_volume_by_index)(
-		void *container_ptr, int32_t index);
+		void *candle_table, int32_t index);
 
 	int64_t (*get_volume_by_start_timestamp)(
-		void *container_ptr, int64_t start_timestamp);
+		void *candle_table, int64_t start_timestamp);
 
 	int64_t (*get_volume_by_end_timestamp)(
-		void *container_ptr, int64_t end_timestamp);
+		void *candle_table, int64_t end_timestamp);
 
 	int64_t (*get_volume_by_datetime)(
-		void *container_ptr, int32_t date, int32_t time);
+		void *candle_table, int32_t date, int32_t time);
 };
 
 enum candle_type_enum {
@@ -139,23 +144,22 @@ enum candle_type_enum {
 	CANDLE_TYPE_1M,
 };
 
-#define MAX_SYMBOL_LENGTH	(16)
-
 /*
- * struct generic_candle_container - Generic container for candle_data.
- * @container_ptr: pointer to the underlying candle container
- * @container_ops: interface to the candle container
- * @symbol: identifier of the candle container
- * @candle_type: type of candles
+ * Generic data structure for managing a specific candle type of a specific
+ * symbol. It abstracts for various types of access methods. Regardless of its
+ * internal implementation, extenal users of this data structure can assum that
+ * the candles are organized as a standard table, such as database relation or
+ * dataframe, etc.
  *
- * This is an abstraction for various types of candle containers. Each candle
- * container implementation, optimized for its own purpose, must provide a
- * pointer to the implemented container and interface to communicate.
+ * @container_ops: interface to the candle container
+ * @candle_table: pointer to the underlying candle table
+ * @candle_storage: file management related data structure
+ * @candle_type: type of candles
  */
 struct candle_container {
-	void *contanier_ptr;
 	struct candle_container_ops *container_ops;
-	char symbol[MAX_SYMBOL_LENGTH];
+	void *candle_table;
+	void *candle_storage;
 	int candle_type;
 };
 

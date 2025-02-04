@@ -1,5 +1,9 @@
 #include "include/candle_cantainer/realtime_candle_container.h"
 
+struct realtime_candle_container {
+
+};
+
 static candle_container_ops realtime_candle_container_ops = {
 	.update_candle = ,
 	.get_candle_by_index = ,
@@ -23,3 +27,13 @@ static candle_container_ops realtime_candle_container_ops = {
 	.get_close_by_end_timestamp = ,
 	.get_close_by_datetime =
 };
+
+struct candle_contanier *init_realtime_candle_container(int candle_type)
+{
+
+}
+
+void free_realtime_candle_container(struct candle_container *container)
+{
+
+}
