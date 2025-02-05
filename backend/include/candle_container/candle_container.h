@@ -10,9 +10,12 @@
 #endif /* __cacheline_aligned */
 
 /*
- * Data structure for storing a single OHLCV candle. This is a logical unit of
- * candle table. But its physical layout may be different on the
- * candle_container type.
+ * Data structure for a single OHLCV (open, high, low, close, volume) candle,
+ * serving as a logical unit of a candle table.
+ *
+ * This structure is just a definition of a candle. The fields of a real candle
+ * data may have different physcial layouts depending on the candle_container
+ * type.
  *
  * @date: e.g. 2024-01-01 => 20240101
  * @time: e.g. 12:04:01 => 120401 (optional)
@@ -45,8 +48,10 @@ struct candle_data {
 #define IS_CANDLE_NULL(candle_state)	(candle_state & CANDLE_NULL_MASK)
 
 /*
- * This structure abstracts operations on a candle_container. All types of
- * candle_container must provide candle_container_ops. 
+ * This structure abstracts the operations of a candle_container. Users interact
+ * with a unified interface for all types of candle_container, eliminating
+ * dependencies between the internal candle_container implementation and
+ * external user code.
  *
  * @update_candle: function pointer to apply a new trade data
  * @get_*_by_index: function pointer to fetch a data by index
@@ -145,11 +150,15 @@ enum candle_type_enum {
 };
 
 /*
- * Generic data structure for managing a specific candle type of a specific
- * symbol. It abstracts for various types of access methods. Regardless of its
- * internal implementation, extenal users of this data structure can assum that
- * the candles are organized as a standard table, such as database relation or
- * dataframe, etc.
+ * This structure abstracts objects that manage a specific candle type of a
+ * specific symbol, including memory access and file-based access, etc. It also
+ * contains candle_container_ops, the interface for interacting with these
+ * objects.
+ *
+ * All types of candle_container must provide an initialization function that
+ * returns this structure and a free function for this structure. Users should
+ * be able to interact with any candle_container without relying on its internal
+ * implementation.
  *
  * @container_ops: interface to the candle container
  * @candle_table: pointer to the underlying candle table
