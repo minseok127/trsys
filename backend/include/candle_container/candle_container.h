@@ -10,12 +10,7 @@
 #endif /* __cacheline_aligned */
 
 /*
- * Data structure for a single OHLCV (open, high, low, close, volume) candle,
- * serving as a logical unit of a candle table.
- *
- * This structure is just a definition of a candle. The fields of a real candle
- * data may have different physcial layouts depending on the candle_container
- * type.
+ * struct candle_data - Data structure for a single OHLCV
  *
  * @date: e.g. 2024-01-01 => 20240101
  * @time: e.g. 12:04:01 => 120401 (optional)
@@ -26,6 +21,9 @@
  * @close: the closing price
  * @volume: the trading volume
  * @state: the state of the candle
+ *
+ * This is a definition of a candle. But the fields of a real candle data may
+ * have different physical layouts depending on the candle_container type.
  */
 struct candle_data {
 	int32_t		date;
@@ -48,10 +46,7 @@ struct candle_data {
 #define IS_CANDLE_NULL(candle_state)	(candle_state & CANDLE_NULL_MASK)
 
 /*
- * This structure abstracts the operations of a candle_container. Users interact
- * with a unified interface for all types of candle_container, eliminating
- * dependencies between the internal candle_container implementation and
- * external user code.
+ * struct candle_container_ops - Interface of candle_container
  *
  * @update_candle: function pointer to apply a new trade data
  * @get_*_by_index: function pointer to fetch a data by index
@@ -60,6 +55,11 @@ struct candle_data {
  * @get_*_by_end_timestamp: function pointer to fetch a data by
  * end timestamp
  * @get_*_by_datetime: function pointer to fetch a data by datetime
+ *
+ * This structure abstracts the operations of a candle_container. Users interact
+ * with a unified interface for all types of candle_container, eliminating
+ * dependencies between the internal candle_container implementation and
+ * external user code.
  */	
 struct candle_container_ops {
 	int64_t (*update_candle)(void *candle_table,
@@ -150,6 +150,13 @@ enum candle_type_enum {
 };
 
 /*
+ * struct candle_container - Generic data structure for candles
+ *
+ * @container_ops: interface to the candle container
+ * @candle_table: pointer to the underlying candle table
+ * @candle_storage: file management related data structure
+ * @candle_type: type of candles
+ *
  * This structure abstracts objects that manage a specific candle type of a
  * specific symbol, including memory access and file-based access, etc. It also
  * contains candle_container_ops, the interface for interacting with these
@@ -159,11 +166,6 @@ enum candle_type_enum {
  * returns this structure and a free function for this structure. Users should
  * be able to interact with any candle_container without relying on its internal
  * implementation.
- *
- * @container_ops: interface to the candle container
- * @candle_table: pointer to the underlying candle table
- * @candle_storage: file management related data structure
- * @candle_type: type of candles
  */
 struct candle_container {
 	struct candle_container_ops *container_ops;
