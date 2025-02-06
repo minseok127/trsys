@@ -11,7 +11,6 @@
 
 /*
  * struct candle_data - Data structure for a single OHLCV
- *
  * @date: e.g. 2024-01-01 => 20240101
  * @time: e.g. 12:04:01 => 120401 (optional)
  * @start_timestamp: the candle's start unix epoch timestamp
@@ -47,7 +46,6 @@ struct candle_data {
 
 /*
  * struct candle_container_ops - Interface of candle_container
- *
  * @update_candle: function pointer to apply a new trade data
  * @get_*_by_index: function pointer to fetch a data by index
  * @get_*_by_start_timestamp: function pointer to fecth a data by
@@ -151,7 +149,6 @@ enum candle_type_enum {
 
 /*
  * struct candle_container - Generic data structure for candles
- *
  * @container_ops: interface to the candle container
  * @candle_table: pointer to the underlying candle table
  * @candle_storage: file management related data structure
